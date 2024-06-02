@@ -52,7 +52,7 @@ CREATE TABLE public.galaxy (
     age integer,
     description text,
     name character varying(200) NOT NULL,
-    error integer DEFAULT 500 NOT NULL
+    is_existent character varying(200) DEFAULT 'Exists'::character varying NOT NULL
 );
 
 
@@ -276,13 +276,13 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 -- Data for Name: galaxy; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.galaxy VALUES (2, 14, 'Our spiral galaxy containing the Solar System and billions of stars.', 'Milky Way', 500);
-INSERT INTO public.galaxy VALUES (3, 10, 'The nearest spiral galaxy to the Milky Way, on a collision course with it.', 'Andromeda', 500);
-INSERT INTO public.galaxy VALUES (4, 13, 'A bright, unbarred spiral galaxy with a distinctive dust lane, resembling a sombrero hat.', 'Sombrero', 500);
-INSERT INTO public.galaxy VALUES (5, 16, 'A giant elliptical galaxy in the Virgo Cluster, famous for its supermassive black hole and plasma jet.', 'Messier 87', 500);
-INSERT INTO public.galaxy VALUES (6, 17, 'A classic spiral galaxy known for its interaction with a companion galaxy, NGC 5195.', 'Whirlpool', 500);
-INSERT INTO public.galaxy VALUES (7, 13, 'A satellite galaxy of the Milky Way, rich in star-forming regions like the Tarantula Nebula.', 'LMC', 500);
-INSERT INTO public.galaxy VALUES (8, 12, 'Another dwarf irregular galaxy orbiting the Milky Way, notable for its interactions with the LMC.', 'SMC', 500);
+INSERT INTO public.galaxy VALUES (2, 14, 'Our spiral galaxy containing the Solar System and billions of stars.', 'Milky Way', 'Exists');
+INSERT INTO public.galaxy VALUES (3, 10, 'The nearest spiral galaxy to the Milky Way, on a collision course with it.', 'Andromeda', 'Exists');
+INSERT INTO public.galaxy VALUES (4, 13, 'A bright, unbarred spiral galaxy with a distinctive dust lane, resembling a sombrero hat.', 'Sombrero', 'Exists');
+INSERT INTO public.galaxy VALUES (5, 16, 'A giant elliptical galaxy in the Virgo Cluster, famous for its supermassive black hole and plasma jet.', 'Messier 87', 'Exists');
+INSERT INTO public.galaxy VALUES (6, 17, 'A classic spiral galaxy known for its interaction with a companion galaxy, NGC 5195.', 'Whirlpool', 'Exists');
+INSERT INTO public.galaxy VALUES (7, 13, 'A satellite galaxy of the Milky Way, rich in star-forming regions like the Tarantula Nebula.', 'LMC', 'Exists');
+INSERT INTO public.galaxy VALUES (8, 12, 'Another dwarf irregular galaxy orbiting the Milky Way, notable for its interactions with the LMC.', 'SMC', 'Exists');
 
 
 --
@@ -332,6 +332,7 @@ INSERT INTO public.planet VALUES (8, false, 1, 'C', 'Jupiter', 5500);
 INSERT INTO public.planet VALUES (9, false, 2, 'C', NULL, 5800);
 INSERT INTO public.planet VALUES (10, false, 5, 'C', 'NA->Black hole', 1000000);
 INSERT INTO public.planet VALUES (11, false, 6, 'C', NULL, NULL);
+INSERT INTO public.planet VALUES (12, false, 3, 'C', 'NA->Black hole', 3400203);
 
 
 --
@@ -373,7 +374,7 @@ SELECT pg_catalog.setval('public.moon_moon_id_seq', 27, true);
 -- Name: planet_planet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
-SELECT pg_catalog.setval('public.planet_planet_id_seq', 11, true);
+SELECT pg_catalog.setval('public.planet_planet_id_seq', 12, true);
 
 
 --
@@ -407,6 +408,30 @@ ALTER TABLE ONLY public.moon
 
 
 --
+-- Name: galaxy name_unique; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT name_unique UNIQUE (name);
+
+
+--
+-- Name: moon name_unique_moon; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT name_unique_moon UNIQUE (name);
+
+
+--
+-- Name: star name_unique_star; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT name_unique_star UNIQUE (name);
+
+
+--
 -- Name: planet planet_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
@@ -415,11 +440,27 @@ ALTER TABLE ONLY public.planet
 
 
 --
+-- Name: planet planet_unique; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT planet_unique UNIQUE (planet_id);
+
+
+--
 -- Name: solar_belts solar_belts_distance_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.solar_belts
     ADD CONSTRAINT solar_belts_distance_key UNIQUE (distance);
+
+
+--
+-- Name: solar_belts solar_belts_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.solar_belts
+    ADD CONSTRAINT solar_belts_pkey PRIMARY KEY (solar_belts_id);
 
 
 --
@@ -457,3 +498,5 @@ ALTER TABLE ONLY public.planet
 --
 -- PostgreSQL database dump complete
 --
+
+
